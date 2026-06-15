@@ -1,11 +1,5 @@
 'use client'
 
-/**
- * COMPONENT: Navbar — Public marketing navigation bar
- * USED IN: Homepage (app/page.tsx) only
- * Distinct from AppNavbar — no auth state, no language switcher
- */
-
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 
@@ -50,7 +44,7 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            
               key={link.label}
               href={link.href}
               className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors link-underline"
@@ -62,13 +56,19 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-3">
-          <a
+          
             href="#contact"
             className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors px-4 py-2"
           >
             Contact
           </a>
-          <a
+          
+            href="/login"
+            className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors px-4 py-2 border border-[#27272a] rounded-sm hover:border-[#52525b]"
+          >
+            Login
+          </a>
+          
             href="#demo"
             className="text-sm font-medium bg-[#e8650a] hover:bg-[#d15a08] text-white px-5 py-2 rounded-sm transition-colors"
           >
@@ -90,7 +90,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden bg-[#09090b]/98 backdrop-blur-md border-b border-[#27272a] px-6 py-6 flex flex-col gap-4">
           {navLinks.map((link) => (
-            <a
+            
               key={link.label}
               href={link.href}
               className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors py-1"
@@ -99,7 +99,14 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
+          
+            href="/login"
+            className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors py-1"
+            onClick={() => setMobileOpen(false)}
+          >
+            Login
+          </a>
+          
             href="#demo"
             className="mt-2 text-sm font-medium bg-[#e8650a] text-white px-5 py-2.5 rounded-sm text-center"
             onClick={() => setMobileOpen(false)}
