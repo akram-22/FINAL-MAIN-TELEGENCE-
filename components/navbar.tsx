@@ -29,7 +29,7 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between h-16">
-        {/* Logo */}
+
         <a href="#" className="flex items-center gap-2.5 group">
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/api-attachments/8kwBAt3TMcfrzznrtjDZB-U0Xoo396fJCBz5q9GAxESy7SrAtdG6.png"
@@ -41,7 +41,6 @@ export default function Navbar() {
           </span>
         </a>
 
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             
@@ -54,29 +53,18 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-3">
-          
-            href="#contact"
-            className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors px-4 py-2"
-          >
+          <a href="#contact" className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors px-4 py-2">
             Contact
           </a>
-          
-            href="/login"
-            className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors px-4 py-2 border border-[#27272a] rounded-sm hover:border-[#52525b]"
-          >
+          <a href="/login" className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors px-4 py-2 border border-[#27272a] rounded-sm hover:border-[#52525b]">
             Login
           </a>
-          
-            href="#demo"
-            className="text-sm font-medium bg-[#e8650a] hover:bg-[#d15a08] text-white px-5 py-2 rounded-sm transition-colors"
-          >
+          <a href="#demo" className="text-sm font-medium bg-[#e8650a] hover:bg-[#d15a08] text-white px-5 py-2 rounded-sm transition-colors">
             Request a Demo
           </a>
         </div>
 
-        {/* Mobile Toggle */}
         <button
           className="md:hidden text-[#a1a1aa] hover:text-white transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -86,7 +74,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden bg-[#09090b]/98 backdrop-blur-md border-b border-[#27272a] px-6 py-6 flex flex-col gap-4">
           {navLinks.map((link) => (
@@ -99,18 +86,10 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          
-            href="/login"
-            className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors py-1"
-            onClick={() => setMobileOpen(false)}
-          >
+          <a href="/login" className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors py-1" onClick={() => setMobileOpen(false)}>
             Login
           </a>
-          
-            href="#demo"
-            className="mt-2 text-sm font-medium bg-[#e8650a] text-white px-5 py-2.5 rounded-sm text-center"
-            onClick={() => setMobileOpen(false)}
-          >
+          <a href="#demo" className="mt-2 text-sm font-medium bg-[#e8650a] text-white px-5 py-2.5 rounded-sm text-center" onClick={() => setMobileOpen(false)}>
             Request a Demo
           </a>
         </div>
