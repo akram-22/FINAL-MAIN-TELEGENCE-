@@ -116,15 +116,15 @@ const statutFr   = { good: 'Normal', warning: 'Avertissement', critical: 'Critiq
 
 export const MACHINES = [
   { id: 'GTA-07', name: 'Turbine GTA-7',           type: 'Turbine à gaz',         location: 'Unité 1 – Station A', rul: 87,  health: 'good'     as const, temp: 312, vibration: 0.42, pressure: 14.2, uptime: 98.4, lastInspection: '2025-12-14', nextMaintenance: '2026-03-15', cycles: 18420,
-    models: { lstm: 87, gru: 85, rf: 84, gb: 89, bestModel: 'Gradient Boosting' } },
+    models: { lstm: 87, gru: 85, rf: 84, gb: 89, bestModel: 'XGBoost' } },
   { id: 'CMP-K12', name: 'Compresseur K-12',        type: 'Compresseur centrifuge', location: 'Unité 2 – Station B', rul: 34,  health: 'warning'  as const, temp: 428, vibration: 1.87, pressure: 22.8, uptime: 94.1, lastInspection: '2025-11-30', nextMaintenance: '2026-01-20', cycles: 31204,
-    models: { lstm: 34, gru: 33, rf: 31, gb: 36, bestModel: 'Gradient Boosting' } },
+    models: { lstm: 34, gru: 33, rf: 31, gb: 36, bestModel: 'XGBoost' } },
   { id: 'PMP-P04', name: 'Pompe P-4',               type: 'Pompe centrifuge',       location: 'Unité 1 – Station C', rul: 62,  health: 'good'     as const, temp: 195, vibration: 0.61, pressure: 8.7,  uptime: 99.1, lastInspection: '2026-01-05', nextMaintenance: '2026-04-02', cycles: 9870,
     models: { lstm: 62, gru: 61, rf: 58, gb: 60, bestModel: 'LSTM' } },
   { id: 'EMT-22',  name: 'Moteur EMT-22',            type: 'Moteur électrique',      location: 'Unité 3 – Station D', rul: 11,  health: 'critical' as const, temp: 521, vibration: 3.24, pressure: 0,    uptime: 81.3, lastInspection: '2025-10-22', nextMaintenance: '2026-01-18', cycles: 44015,
     models: { lstm: 11, gru: 10, rf: 9,  gb: 13, bestModel: 'LSTM' } },
   { id: 'HX-05',   name: 'Échangeur thermique HX-5', type: 'Échangeur à plaques',    location: 'Unité 2 – Station E', rul: 28,  health: 'warning'  as const, temp: 395, vibration: 1.44, pressure: 19.2, uptime: 91.7, lastInspection: '2025-12-01', nextMaintenance: '2026-01-25', cycles: 27680,
-    models: { lstm: 28, gru: 27, rf: 25, gb: 30, bestModel: 'Gradient Boosting' } },
+    models: { lstm: 28, gru: 27, rf: 25, gb: 30, bestModel: 'XGBoost' } },
 ]
 
 export const ALERTS = [
@@ -135,22 +135,22 @@ export const ALERTS = [
 ]
 
 const MODEL_METRICS = {
-  lstm: { rmse: 18.6, mae: 13.2, r2: 0.91, label: 'LSTM',               color: '#e8650a', desc: 'LSTM empilé 2 couches · fenêtre 30 cycles · FD001' },
-  gru:  { rmse: 19.4, mae: 13.9, r2: 0.90, label: 'GRU',                color: '#a78bfa', desc: 'Gated Recurrent Unit · fenêtre 30 cycles · FD001' },
-  rf:   { rmse: 24.1, mae: 17.8, r2: 0.86, label: 'Random Forest',       color: '#3b82f6', desc: '200 arbres · features calculées · stats de cycles' },
-  gb:   { rmse: 21.3, mae: 15.4, r2: 0.88, label: 'Gradient Boosting',   color: '#10b981', desc: "Arbres boostés · taux d'apprentissage 0.05" },
+  lstm: { rmse: 13.7, mae: 8.9, r2: 0.892, label: 'LSTM',               color: '#e8650a', desc: 'LSTM empilé 2 couches · fenêtre 30 cycles · FD001' },
+  gru:  { rmse: 14.7, mae: 9.5, r2: 0.875, label: 'GRU',                color: '#a78bfa', desc: 'Gated Recurrent Unit · fenêtre 30 cycles · FD001' },
+  rf:   { rmse: 17.0, mae: 12.3, r2: 0.834, label: 'Random Forest',       color: '#3b82f6', desc: '200 arbres · features calculées · stats de cycles' },
+  gb:   { rmse: 17.0, mae: 12.2, r2: 0.834, label: 'XGBoost',           color: '#10b981', desc: 'XGBoost · 500 estimateurs · taux apprentissage 0.05' },
 }
 
 const AI_INSIGHTS = [
   { severity: 'critical', machine: 'Moteur EMT-22',          insight: 'Dégradation accélérée détectée. Confiance LSTM : 94.2 %, GRU : 93.8 %. Défaillance prédite sous 11 cycles. Intervention immédiate requise.',                         action: 'Planifier le remplacement du palier sous 7 jours.', model: 'LSTM' },
-  { severity: 'warning',  machine: 'Compresseur K-12',        insight: 'Enveloppe de vibration à 1.87g — 24.7 % au-dessus du seuil. Gradient Boosting signale un déséquilibre rotor probable. RF confirme la tendance sur 8 cycles.',        action: "Inspecter l'équilibre impulseur et les jeux de paliers.", model: 'Gradient Boosting' },
+  { severity: 'warning',  machine: 'Compresseur K-12',        insight: 'Enveloppe de vibration à 1.87g — 24.7 % au-dessus du seuil. XGBoost signale un déséquilibre rotor probable. RF confirme la tendance sur 8 cycles.',        action: "Inspecter l'équilibre impulseur et les jeux de paliers.", model: 'XGBoost' },
   { severity: 'warning',  machine: 'Échangeur thermique HX-5', insight: 'Hausse de température de 12 °C en 6 h, au-delà du seuil modèle. Les quatre modèles (LSTM, GRU, RF, GB) prédisent un RUL < 35 jours.',                            action: "Vérifier le circuit de refroidissement et l'efficacité de l'échangeur.", model: 'Ensemble' },
   { severity: 'info',     machine: 'Turbine GTA-7',            insight: 'Actif dans les plages saines. LSTM projette 87 jours RUL, GRU 85 jours. Aucune anomalie sur 9 canaux capteurs. Maintenance planifiée alignée avec la prédiction.', action: 'Aucune action requise. Prochaine inspection le 15 mars.', model: 'LSTM' },
 ]
 
 const MAINTENANCE_RECS = [
   { machine: 'Moteur EMT-22',          priority: 'Immediate', action: 'Remplacement palier principal',   dueDate: '2026-01-18', cost: '562 800 DZD', model: 'LSTM',             rul: 11 },
-  { machine: 'Compresseur K-12',        priority: 'Urgent',    action: 'Inspection rotor et paliers',     dueDate: '2026-01-20', cost: '241 200 DZD', model: 'Gradient Boosting', rul: 34 },
+  { machine: 'Compresseur K-12',        priority: 'Urgent',    action: 'Inspection rotor et paliers',     dueDate: '2026-01-20', cost: '241 200 DZD', model: 'XGBoost', rul: 34 },
   { machine: 'Échangeur thermique HX-5', priority: 'Soon',     action: 'Entretien circuit refroidissement', dueDate: '2026-01-25', cost: '127 300 DZD', model: 'Random Forest',   rul: 28 },
   { machine: 'Turbine GTA-7',            priority: 'Planned',  action: 'Inspection périodique des aubes', dueDate: '2026-03-15', cost: '321 600 DZD', model: 'LSTM',             rul: 87 },
 ]
@@ -275,7 +275,7 @@ const PRE_SEEDED_ALERTS: LiveAlert[] = [
     warnThresholdLabel: '1.50g', critThresholdLabel: '2.00g',
     action: SENSOR_ACTIONS['Vibration'].warning, timestamp: '08:27', status: 'active', elapsedWhenTriggered: 0,
     rul: 34, causeProbable: 'Déséquilibre du rotor centrifuge — jeux de paliers supérieurs à la tolérance nominale (8 cycles)',
-    aiConfidence: 88, aiModel: 'Gradient Boosting', machineLocation: 'Unité 2 – Station B',
+    aiConfidence: 88, aiModel: 'XGBoost', machineLocation: 'Unité 2 – Station B',
   },
   {
     id: 'CMP-K12:temp', severity: 'warning',  machine: 'Compresseur K-12', machineId: 'CMP-K12',
@@ -501,9 +501,9 @@ const EQUIPEMENTS_CRITIQUES = [
 const AI_PREDICTIONS_FR = [
   { machine: 'Moteur EMT-22',          modele: 'LSTM',                 confiance: 94, datePrevu: '2026-01-29', rul: 11, risque: 'Critique' as const },
   { machine: 'Échangeur thermique HX-5', modele: 'Ensemble (4 modèles)', confiance: 91, datePrevu: '2026-02-22', rul: 28, risque: 'Élevé'   as const },
-  { machine: 'Compresseur K-12',        modele: 'Gradient Boosting',    confiance: 88, datePrevu: '2026-03-03', rul: 34, risque: 'Moyen'    as const },
+  { machine: 'Compresseur K-12',        modele: 'XGBoost',    confiance: 88, datePrevu: '2026-03-03', rul: 34, risque: 'Moyen'    as const },
   { machine: 'Pompe P-4',               modele: 'LSTM',                 confiance: 85, datePrevu: '2026-03-23', rul: 62, risque: 'Faible'   as const },
-  { machine: 'Turbine GTA-7',           modele: 'Gradient Boosting',    confiance: 91, datePrevu: '2026-04-27', rul: 87, risque: 'Faible'   as const },
+  { machine: 'Turbine GTA-7',           modele: 'XGBoost',    confiance: 91, datePrevu: '2026-04-27', rul: 87, risque: 'Faible'   as const },
 ]
 
 // Icon components referenced by value — JSX instantiated at render time, not module scope
@@ -739,7 +739,7 @@ function RULMultiLineChart({ data: rawData, height = 130 }: { data: RULChartData
     { key: 'lstm',   color: '#e8650a', dash: '6 3', label: 'LSTM',              width: 1.5 },
     { key: 'gru',    color: '#a78bfa', dash: '6 3', label: 'GRU',               width: 1.5 },
     { key: 'rf',     color: '#71717a', dash: '3 2', label: 'Random Forest',     width: 1.5 },
-    { key: 'gb',     color: '#10b981', dash: '3 2', label: 'Gradient Boosting', width: 1.5 },
+    { key: 'gb',     color: '#10b981', dash: '3 2', label: 'XGBoost', width: 1.5 },
   ]
   return (
     <div className="flex flex-col gap-3">
@@ -1147,7 +1147,7 @@ function OverviewPanel({ onNavigateSense }: { onNavigateSense?: () => void }) {
 
       {/* AI Predictions */}
       <div className="bg-[#0d0d0f] border border-[#1c1c1f] rounded-sm p-4">
-        <SectionTitle icon={<Brain size={13} />} title="Prédictions IA — Défaillances prévues" subtitle="Basé sur 4 modèles : LSTM, GRU, Random Forest, Gradient Boosting" />
+        <SectionTitle icon={<Brain size={13} />} title="Prédictions IA — Défaillances prévues" subtitle="Basé sur 4 modèles : LSTM, GRU, Random Forest, XGBoost" />
         <div className="overflow-x-auto">
           <table className="w-full text-[10px] font-mono border-collapse">
             <thead>
@@ -1294,7 +1294,7 @@ function AssetsPanel() {
               { label: 'LSTM',              val: selected.models.lstm, color: '#e8650a' },
               { label: 'GRU',               val: selected.models.gru,  color: '#a78bfa' },
               { label: 'Random Forest',     val: selected.models.rf,   color: '#3b82f6' },
-              { label: 'Gradient Boosting', val: selected.models.gb,   color: '#10b981' },
+              { label: 'XGBoost', val: selected.models.gb,   color: '#10b981' },
             ].map(mm => (
               <div key={mm.label} className="flex items-center justify-between text-[10px] font-mono py-1">
                 <span style={{ color: mm.color }}>{mm.label}</span>
@@ -1433,7 +1433,7 @@ function ModelsPanel() {
           <GitCompare size={15} className="text-[#e8650a]" />
           <p className="text-xs font-semibold text-[#e4e4e7]">Comparaison de modèles — Jeu de test NASA FD001</p>
         </div>
-        <p className="text-[10px] font-mono text-[#52525b]">Évalué sur 100 moteurs de test. 4 modèles : LSTM, GRU, Random Forest, Gradient Boosting. Métriques : RMSE, MAE, R².</p>
+        <p className="text-[10px] font-mono text-[#52525b]">Évalué sur 100 moteurs de test. 4 modèles : LSTM, GRU, Random Forest, XGBoost. Métriques : RMSE, MAE, R².</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
         {Object.entries(MODEL_METRICS).map(([key, m]) => (
@@ -2415,7 +2415,7 @@ function MaintenancePanel() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-semibold text-[#e4e4e7]">Recommandations de maintenance</p>
-          <p className="text-[10px] font-mono text-[#52525b] mt-0.5">Générées par IA — LSTM / GRU / RF / Gradient Boosting · Coûts en DZD</p>
+          <p className="text-[10px] font-mono text-[#52525b] mt-0.5">Générées par IA — LSTM / GRU / RF / XGBoost · Coûts en DZD</p>
         </div>
         <button className="flex items-center gap-1.5 text-[10px] font-mono text-[#52525b] hover:text-[#a1a1aa] border border-[#27272a] px-2 py-1 rounded-sm transition-colors"><Download size={10} /> Exporter</button>
       </div>
@@ -2458,7 +2458,7 @@ function SettingsPanel() {
     <div className="flex flex-col gap-4 max-w-2xl">
       <p className="text-xs font-semibold text-[#e4e4e7]">Paramètres de la plateforme</p>
       {[
-        { label: 'Modèles de prédiction actifs',    value: 'LSTM, GRU, Random Forest, Gradient Boosting' },
+        { label: 'Modèles de prédiction actifs',    value: 'LSTM, GRU, Random Forest, XGBoost' },
         { label: 'Seuil critique RUL',              value: '15 jours' },
         { label: "Mode d'alerte",                   value: 'Email + Webhook' },
         { label: 'Politique de rétention des données', value: '24 mois' },
